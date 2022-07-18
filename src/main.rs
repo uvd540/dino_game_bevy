@@ -7,6 +7,8 @@ const WINDOW_WIDTH: f32 = 640.;
 const WINDOW_HEIGHT: f32 = 320.;
 const WINDOW_BACKGROUND_COLOR: Color = Color::WHITE;
 
+const JUMP_VEL: f32 = 10.;
+
 fn main() {
     App::new()
         .insert_resource(WindowDescriptor {
@@ -28,6 +30,3 @@ fn spawn_camera_and_ui (
 ) {
     commands.spawn_bundle(OrthographicCameraBundle::new_2d());
 }
-
-
-

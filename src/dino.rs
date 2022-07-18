@@ -10,32 +10,6 @@ impl Plugin for DinoPlugin {
     }
 }
 
-fn spawn_dino(
-    mut commands: Commands,
-    dino_run_texture_atlas_handle: Res<DinoRunTextureAtlas>
-) {
-    let dino = Dino {
-        dino_state: DinoState::Running,
-        vel_y: 0.
-    };
-    commands
-        .spawn()
-        .insert(dino)
-        .insert_bundle(SpriteSheetBundle {
-            texture_atlas: dino_run_texture_atlas_handle.0.clone(),
-            sprite: TextureAtlasSprite::new(1),
-            transform: Transform::from_translation(Vec3::new(-crate::WINDOW_WIDTH / 3., -crate::WINDOW_HEIGHT / 2.5, 0.)),
-            ..Default::default()
-        });
-}
-
-// fn handle_dino_animations
-// Query (TextureAtlasSprite, Dino)
-// change Sprite properties based on Dino.dino_state
-
-#[derive(Clone)]
-struct DinoRunTextureAtlas(Handle<TextureAtlas>);
-
 #[derive(Component)]
 struct Dino {
     dino_state: DinoState,
@@ -48,6 +22,9 @@ enum DinoState {
     Jumping,
     Collided,
 }
+
+#[derive(Clone)]
+struct DinoRunTextureAtlas(Handle<TextureAtlas>);
 
 fn load_dino_assets (
     mut commands: Commands,
@@ -75,3 +52,26 @@ fn load_dino_assets (
     commands.insert_resource(DinoRunTextureAtlas(texture_atlas_handle));
 
 }
+
+fn spawn_dino(
+    mut commands: Commands,
+    dino_run_texture_atlas_handle: Res<DinoRunTextureAtlas>
+) {
+    let dino = Dino {
+        dino_state: DinoState::Running,
+        vel_y: 0.
+    };
+    commands
+        .spawn()
+        .insert(dino)
+        .insert_bundle(SpriteSheetBundle {
+            texture_atlas: dino_run_texture_atlas_handle.0.clone(),
+            sprite: TextureAtlasSprite::new(1),
+            transform: Transform::from_translation(Vec3::new(-crate::WINDOW_WIDTH / 3., -crate::WINDOW_HEIGHT / 2.5, 0.)),
+            ..Default::default()
+        });
+}
+
+// fn handle_dino_animations
+// Query (TextureAtlasSprite, Dino)
+// change Sprite properties based on Dino.dino_state
