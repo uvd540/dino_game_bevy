@@ -7,7 +7,11 @@ const WINDOW_WIDTH: f32 = 640.;
 const WINDOW_HEIGHT: f32 = 320.;
 const WINDOW_BACKGROUND_COLOR: Color = Color::WHITE;
 
-const JUMP_VEL: f32 = 10.;
+const DINO_X_LOCATION: f32 = -crate::WINDOW_WIDTH / 3.;
+const DINO_Y_LOCATION: f32 = -crate::WINDOW_HEIGHT / 2.5;
+
+const JUMP_VEL: f32 = 25.;
+const GRAVITY: f32 = 2.;
 
 fn main() {
     App::new()
