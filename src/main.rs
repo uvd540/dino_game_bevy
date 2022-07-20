@@ -3,6 +3,9 @@ use bevy::prelude::*;
 mod dino;
 use dino::DinoPlugin;
 
+mod desert;
+use desert::DesertPlugin;
+
 const WINDOW_WIDTH: f32 = 640.;
 const WINDOW_HEIGHT: f32 = 320.;
 const WINDOW_BACKGROUND_COLOR: Color = Color::WHITE;
@@ -28,6 +31,7 @@ fn main() {
         .insert_resource(ClearColor(WINDOW_BACKGROUND_COLOR))
         .add_startup_system_to_stage(StartupStage::PreStartup, spawn_camera_and_ui)
         .add_plugin(DinoPlugin)
+        .add_plugin(DesertPlugin)
         .run();
 }
 
