@@ -5,7 +5,8 @@ pub struct DesertPlugin;
 impl Plugin for DesertPlugin {
     fn build(&self, app: &mut App) {
         app.add_startup_system_to_stage(StartupStage::PreStartup, load_desert_assets)
-            .add_startup_system_to_stage(StartupStage::PostStartup, spawn_desert);
+            .add_startup_system_to_stage(StartupStage::PostStartup, spawn_desert)
+            .add_system(handle_track_movement);
     }
 }
 
@@ -52,10 +53,38 @@ fn spawn_desert(mut commands: Commands, texture_atlas: Res<DesertTextureAtlas>) 
             texture_atlas: texture_atlas.0.clone(),
             sprite: TextureAtlasSprite::new(0),
             transform: Transform::from_translation(Vec3::new(
-                crate::DINO_X_LOCATION,
+                599. - (crate::WINDOW_WIDTH / 2.),
                 crate::DINO_Y_LOCATION - 16.,
                 0.,
             )),
             ..Default::default()
         });
+}
+
+fn handle_track_movement(
+    mut commands: Commands,
+    texture_atlas: Res<DesertTextureAtlas>,
+    mut query: Query<(Entity, &mut Transform), With<Ground>>,
+) {
+    let num_tracks = query.iter().count();
+    for (ground, mut transform) in query.iter_mut() {
+        transform.translation.x -= crate::TRACK_SPEED;
+        if (transform.translation.x < 0.) && (num_tracks < 2) {
+            commands
+            .spawn()
+            .insert(Ground {})
+            .insert_bundle(SpriteSheetBundle {
+                texture_atlas: texture_atlas.0.clone(),
+                sprite: TextureAtlasSprite::new(0),
+                transform: Transform::from_translation(Vec3::new(
+                    transform.translation.x + 1198.,
+                    crate::DINO_Y_LOCATION - 16.,
+                    0.,
+                )),
+                ..Default::default()
+            });
+        } else if transform.translation.x < -(599. + (crate::WINDOW_WIDTH / 2.)) {
+            commands.entity(ground).despawn();
+        }
+    }
 }

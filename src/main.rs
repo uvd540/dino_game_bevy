@@ -17,6 +17,7 @@ const DINO_Y_LOCATION: f32 = -WINDOW_HEIGHT / 2.5;
 
 const JUMP_VEL: f32 = 25.;
 const GRAVITY: f32 = 2.;
+const TRACK_SPEED: f32 = 5.;
 
 fn main() {
     App::new()
