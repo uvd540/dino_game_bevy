@@ -12,8 +12,8 @@ const WINDOW_BACKGROUND_COLOR: Color = Color::WHITE;
 
 const DINO_FPS: u8 = 4;
 
-const DINO_X_LOCATION: f32 = -crate::WINDOW_WIDTH / 3.;
-const DINO_Y_LOCATION: f32 = -crate::WINDOW_HEIGHT / 2.5;
+const DINO_X_LOCATION: f32 = -WINDOW_WIDTH / 3.;
+const DINO_Y_LOCATION: f32 = -WINDOW_HEIGHT / 2.5;
 
 const JUMP_VEL: f32 = 25.;
 const GRAVITY: f32 = 2.;
@@ -35,8 +35,6 @@ fn main() {
         .run();
 }
 
-fn spawn_camera_and_ui (
-    mut commands: Commands,
-) {
+fn spawn_camera_and_ui(mut commands: Commands) {
     commands.spawn_bundle(OrthographicCameraBundle::new_2d());
 }
