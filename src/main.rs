@@ -31,8 +31,6 @@ fn main() {
         .run();
 }
 
-fn spawn_camera_and_ui (
-    mut commands: Commands,
-) {
+fn spawn_camera_and_ui(mut commands: Commands) {
     commands.spawn_bundle(OrthographicCameraBundle::new_2d());
 }
