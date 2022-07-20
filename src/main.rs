@@ -9,8 +9,8 @@ const WINDOW_BACKGROUND_COLOR: Color = Color::WHITE;
 
 const DINO_FPS: u8 = 4;
 
-const DINO_X_LOCATION: f32 = -crate::WINDOW_WIDTH / 3.;
-const DINO_Y_LOCATION: f32 = -crate::WINDOW_HEIGHT / 2.5;
+const DINO_X_LOCATION: f32 = -WINDOW_WIDTH / 3.;
+const DINO_Y_LOCATION: f32 = -WINDOW_HEIGHT / 2.5;
 
 const JUMP_VEL: f32 = 25.;
 const GRAVITY: f32 = 2.;
