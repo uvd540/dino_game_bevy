@@ -1236,6 +1236,7 @@ name = "dino_game_bevy"
 version = "0.1.0"
 dependencies = [
  "bevy",
+ "rand",
 ]
 
 [[package]]

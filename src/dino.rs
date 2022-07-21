@@ -42,17 +42,17 @@ fn load_dino_assets(
         TextureAtlas::new_empty(spritesheet_texture_handle, Vec2::new(1233., 68.));
     // Standing Sprite
     dino_texture_atlas.add_texture(bevy::sprite::Rect {
-        min: Vec2::new(850., 46.),
-        max: Vec2::new(889., 4.),
+        min: Vec2::new(849., 47.),
+        max: Vec2::new(890., 3.),
     });
     // Running Sprites
     dino_texture_atlas.add_texture(bevy::sprite::Rect {
-        min: Vec2::new(938., 46.),
-        max: Vec2::new(977., 4.),
+        min: Vec2::new(937., 47.),
+        max: Vec2::new(978., 3.),
     });
     dino_texture_atlas.add_texture(bevy::sprite::Rect {
-        min: Vec2::new(982., 46.),
-        max: Vec2::new(1021., 4.),
+        min: Vec2::new(981., 47.),
+        max: Vec2::new(1022., 3.),
     });
 
     let texture_atlas_handle = texture_atlases.add(dino_texture_atlas);
@@ -73,7 +73,7 @@ fn spawn_dino(mut commands: Commands, dino_texture_atlas_handle: Res<DinoTexture
             transform: Transform::from_translation(Vec3::new(
                 crate::DINO_X_LOCATION,
                 crate::DINO_Y_LOCATION,
-                0.,
+                20.,
             )),
             ..Default::default()
         })
