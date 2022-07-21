@@ -9,6 +9,7 @@ impl Plugin for DesertPlugin {
             .add_startup_system_to_stage(StartupStage::PostStartup, spawn_desert)
             .add_system(handle_track_movement)
             .add_system(add_environment_objects)
+            .add_system(add_obstacle_objects)
             .add_system(handle_animations)
             .add_system(handle_desert_object_movement);
     }
@@ -20,11 +21,8 @@ struct Ground;
 #[derive(Component)]
 struct DesertObject;
 
-#[derive(Component, Deref)]
-struct Obstacle(u8);
-
 #[derive(Component)]
-struct Animated;
+pub(crate) struct Obstacle;
 
 #[derive(Clone)]
 struct DesertTextureAtlas(Handle<TextureAtlas>);
@@ -37,25 +35,30 @@ fn load_desert_assets(
     let spritesheet_texture_handle = asset_server.load("dino_spritesheet.png");
     let mut texture_atlas =
         TextureAtlas::new_empty(spritesheet_texture_handle, Vec2::new(1233., 68.));
-    // Ground Sprite
+    // 0. Ground Sprite
     texture_atlas.add_texture(bevy::sprite::Rect {
         min: Vec2::new(2., 66.),
         max: Vec2::new(1201., 53.),
     });
-    // Cloud Sprite
+    // 1. Cloud Sprite
     texture_atlas.add_texture(bevy::sprite::Rect {
         min: Vec2::new(85., 15.),
         max: Vec2::new(132., 1.),
     });
-    // Bird Sprite 1
+    // 2. Bird Sprite 1
     texture_atlas.add_texture(bevy::sprite::Rect {
         min: Vec2::new(135., 3.),
         max: Vec2::new(178., 40.),
     });
-    // Bird Sprite 2
+    // 3. Bird Sprite 2
     texture_atlas.add_texture(bevy::sprite::Rect {
         min: Vec2::new(181., 3.),
         max: Vec2::new(224., 40.),
+    });
+    // 4. Cactus Sprite - Level 1
+    texture_atlas.add_texture(bevy::sprite::Rect {
+        min: Vec2::new(332., 2.),
+        max: Vec2::new(356., 51.),
     });
 
     let texture_atlas_handle = texture_atlases.add(texture_atlas);
@@ -78,7 +81,7 @@ fn spawn_desert(mut commands: Commands, texture_atlas: Res<DesertTextureAtlas>) 
         });
     commands
         .spawn()
-        .insert(DesertObjectSpawnTimer(Timer::from_seconds(1., true)));
+        .insert(DesertObjectSpawnTimer(Timer::from_seconds(2., true)));
 }
 
 #[derive(Component, Deref, DerefMut)]
@@ -129,6 +132,34 @@ fn handle_track_movement(
 
 #[derive(Component, Deref, DerefMut)]
 struct DesertObjectSpawnTimer(Timer);
+
+fn add_obstacle_objects(
+    time: Res<Time>,
+    mut commands: Commands,
+    texture_atlas: Res<DesertTextureAtlas>,
+    mut query: Query<&mut DesertObjectSpawnTimer>,
+) {
+    let mut spawn_timer = query.get_single_mut().unwrap();
+    spawn_timer.tick(time.delta());
+    if spawn_timer.just_finished() {
+        commands
+            .spawn()
+            .insert(DesertObject)
+            .insert(Obstacle)
+            .insert_bundle(SpriteSheetBundle {
+                texture_atlas: texture_atlas.0.clone(),
+                sprite: TextureAtlasSprite::new(4),
+                transform: Transform::from_translation(
+                    Vec3::new(
+                        crate::WINDOW_WIDTH / 2. + rand::thread_rng().gen_range(20.0..=1000.),
+                        crate::DINO_Y_LOCATION,
+                        20.,
+                    )
+                ),
+                ..Default::default()
+            });
+    }
+}
 
 fn add_environment_objects(mut commands: Commands, texture_atlas: Res<DesertTextureAtlas>) {
     if rand::thread_rng().gen_range(0..=400) % 200 == 0 {

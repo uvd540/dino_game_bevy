@@ -16,7 +16,7 @@ impl Plugin for DinoPlugin {
 }
 
 #[derive(Component)]
-struct Dino {
+pub(crate) struct Dino {
     dino_state: DinoState,
     vel_y: f32,
 }
